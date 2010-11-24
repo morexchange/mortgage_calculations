@@ -20,6 +20,7 @@ test.rb
 tmp/**/*
 vendor/plugins/newrelic_rpm*
 vendor/plugins/schema-browser/*
+vendor/bundle
 .idea/encodings.xml
 .idea/misc.xml
 .idea/modules.xml

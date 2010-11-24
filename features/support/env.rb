@@ -1,5 +1,13 @@
-$LOAD_PATH << File.join(File.dirname(__FILE__),"..","..","lib")
+require 'bundler'
+begin
+  Bundler.setup(:default, :development)
+rescue Bundler::BundlerError => e
+  $stderr.puts e.message
+  $stderr.puts "Run `bundle install` to install missing gems"
+  exit e.status_code
+end
+
+$LOAD_PATH.unshift(File.dirname(__FILE__) + '/../../lib')
 require 'mortgage_calc'
-require 'spec/expectations'
-require 'spec/matchers'
-require 'spec/stubs/cucumber'
+
+require 'rspec/expectations'

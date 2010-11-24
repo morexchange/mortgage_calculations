@@ -2,8 +2,7 @@ $:.unshift(File.dirname(__FILE__)) unless $:.include?(File.dirname(__FILE__)) ||
 require 'yaml'
 
 module MortgageCalc
-  version = YAML.load_file(File.dirname(__FILE__) + "/../Version.yml")
-  VERSION = "#{version[:major]}.#{version[:minor]}.#{version[:patch]}"
+  VERSION = YAML.load_file(File.dirname(__FILE__) + "/../VERSION")
 end
 
 require 'mortgage_calc/mortgage_util'

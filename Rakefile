@@ -1,33 +1,60 @@
 require 'rubygems'
+require 'bundler'
+begin
+  Bundler.setup(:default, :development)
+rescue Bundler::BundlerError => e
+  $stderr.puts e.message
+  $stderr.puts "Run `bundle install` to install missing gems"
+  exit e.status_code
+end
 require 'rake'
-require 'echoe'
-require 'spec'
-require 'cucumber'
-require 'lib/mortgage_calc'
+
+require 'jeweler'
+Jeweler::Tasks.new do |gem|
+  # gem is a Gem::Specification... see http://docs.rubygems.org/read/chapter/20 for more options
+  gem.name = "mortgage_calculations"
+  gem.homepage = "http://www.pathf.com/blogs/2010/02/mortcalc-gem/"
+  gem.license = "MORExchange"
+  gem.summary = %Q{Utilities for Mortgage related calculations (APR and Monthly Payments)}
+  gem.description = %Q{Utilities for Mortgage related calculations (APR and Monthly Payments)}
+  gem.email = "perry@hertler.org"
+  gem.authors = ["Perry Hertler"]
+
+  #  p.ignore_pattern = ["tmp/*", "script/*, .idea/*"]
+  #  p.development_dependencies = ["rspec >=1.3.1"]
+
+  # Include your dependencies below. Runtime dependencies are required when using your gem,
+  # and development dependencies are only needed for development (ie running rake tasks, tests, etc)
+  #  gem.add_runtime_dependency 'jabber4r', '> 0.1'
+  #  gem.add_development_dependency 'rspec', '> 1.2.3'
+end
+Jeweler::RubygemsDotOrgTasks.new
+
+require 'rspec/core'
+require 'rspec/core/rake_task'
+RSpec::Core::RakeTask.new(:spec) do |spec|
+  spec.pattern = FileList['spec/**/*_spec.rb']
+end
+
+RSpec::Core::RakeTask.new(:rcov) do |spec|
+  spec.pattern = 'spec/**/*_spec.rb'
+  spec.rcov = true
+end
 
 require 'cucumber/rake/task'
-require 'spec/rake/spectask'
+Cucumber::Rake::Task.new(:features)
 
-Echoe.new("mortgage_calculations", MortgageCalc::VERSION) do |p|
-  p.description = "Utilities for Mortgage related calculations (APR and Monthly Payments)"
-  p.url = "http://www.pathf.com/blogs/2010/02/mortcalc-gem/"
-  p.author = "Perry Hertler"
-  p.email = "perry@hertler.org"
-  p.ignore_pattern = ["tmp/*", "script/*, .idea/*"]
-  p.development_dependencies = ["rspec >=1.3.1"]
+task :default => :spec
+
+require 'rake/rdoctask'
+Rake::RDocTask.new do |rdoc|
+  version = File.exist?('VERSION') ? File.read('VERSION') : ""
+
+  rdoc.rdoc_dir = 'rdoc'
+  rdoc.title = "mcalc #{version}"
+  rdoc.rdoc_files.include('README*')
+  rdoc.rdoc_files.include('lib/**/*.rb')
 end
 
-Dir["#File.dirname(__FILE__)}/tasks/*.rake"].sort.each { |ext| load ext }
-spec_files = Rake::FileList["spec/**/*_spec.rb"]
-
-desc "Run specs"
-Spec::Rake::SpecTask.new do |t|
-  t.spec_files = spec_files
-  t.spec_opts = ["-c"]
-end
-
-Cucumber::Rake::Task.new(:features) do |t|
-  t.cucumber_opts = "features --format progress"
-end
 
 task :default => [:spec, :features]

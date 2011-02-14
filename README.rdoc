@@ -1,15 +1,19 @@
-= mortgage_calc
+= mortgage_calculations
 
 http://www.pathf.com/blogs/2010/02/mortcalc-gem/
 
-Calculates mortgage APR, monthly payments, and fees.
+Calculates mortgage APR and monthly payments.
 
 == INSTALL
-  $ sudo gem install gemcutter
-  $ gem tumble
-  $ sudo gem install mortgage_calc
+  $ sudo gem install mortgage_calculations
+
+or add following to your Gemfile
+
+  gem "mortgage_calculations", :require => "mortgage_calc"
+
 or add the following to your <b>environment.rb</b>
-  config.gem 'mortgage_calc'
+
+  config.gem 'mortgage_calculations', :lib => "mortgage_calc"
 
 ==Example:
     loan_amount = 350000
@@ -18,12 +22,11 @@ or add the following to your <b>environment.rb</b>
     lender_fee = 800
     points = 1.0
 
-    mort_calc = MortgageCalc::MortgageUtil.new(loan_amount, interest_rate, period, lender_fee, points)
+    mort_calc = MortgageCalc::MortgageUtil.new(loan_amount, interest_rate, total_fees, period)
     
     mort_calc.apr
     mort_calc.monthly_payment
     mort_calc.monthly_payment_with_fees
-    mort_calc.total_fees
 
 ==Formulas used
 ===Monthly payment with fees

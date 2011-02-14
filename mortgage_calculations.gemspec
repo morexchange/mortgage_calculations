@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = %q{mortgage_calculations}
-  s.version = "0.1.10"
+  s.version = "0.2.0"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Perry Hertler"]
-  s.date = %q{2010-11-24}
+  s.date = %q{2011-02-14}
   s.description = %q{Utilities for Mortgage related calculations (APR and Monthly Payments)}
   s.email = %q{perry@hertler.org}
   s.extra_rdoc_files = [

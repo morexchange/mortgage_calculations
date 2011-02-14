@@ -1,13 +1,12 @@
 module MortgageCalc
   class MortgageUtil
-    attr_accessor :loan_amount, :interest_rate, :period, :fees, :points
+    attr_accessor :loan_amount, :interest_rate, :period, :fee
 
-    def initialize(loan_amount, interest_rate, period=360, fees=0, points=0.0)
+    def initialize(loan_amount, interest_rate, fee, period=360)
       self.loan_amount = Float(loan_amount.to_s)
       self.interest_rate = Float(interest_rate.to_s)
       self.period = Integer(period.to_s)
-      self.fees = fees
-      self.points = Float(points.to_s)
+      self.fee = Float(fee.to_s)
     end
 
     def apr
@@ -19,13 +18,7 @@ module MortgageCalc
     end
 
     def monthly_payment_with_fees
-      @monthly_payment_with_fees ||= calculate_monthly_payment(self.loan_amount + total_fees, monthly_interest_rate, self.period)
-    end
-
-    def total_fees(negative_allowed = true)
-      #fees may not be negative (borrower is not paid)
-      total_fees = calculate_total_fees
-      !negative_allowed && total_fees < 0 ? 0 : total_fees
+      @monthly_payment_with_fees ||= calculate_monthly_payment(self.loan_amount + fee, monthly_interest_rate, self.period)
     end
 
     private
@@ -35,10 +28,6 @@ module MortgageCalc
 
     def calculate_monthly_payment(amount, monthly_rate, period)
       amount * (monthly_rate/(1 - (1 + monthly_rate)**(-period)))
-    end
-
-    def calculate_total_fees
-      self.fees + (self.loan_amount * points/100)
     end
 
     # solves APR

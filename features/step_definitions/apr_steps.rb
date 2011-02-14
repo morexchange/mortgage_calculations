@@ -1,5 +1,6 @@
 Given /^(.*), (.*), (.*), (.*), (.*)$/ do |loan_amount, fees, points, rate, period|
-  @mortgage_util = MortgageCalc::MortgageUtil.new(Integer(loan_amount), Float(rate), Integer(period), Float(fees), Float(points))
+  fee = Float(fees) + Float(loan_amount) * Float(points)/100
+  @mortgage_util = MortgageCalc::MortgageUtil.new(Integer(loan_amount), Float(rate), fee, Integer(period))
 end
 
 Then /^the resultant apr should be (.*)$/ do |apr_expected|

@@ -69,6 +69,18 @@ module MortgageCalc
         @mortgage_util.period.class.should == Fixnum
       end
     end
+    
+    context "when borrowed_fees is specified" do
+      before(:all) do
+        @mortgage_util = MortgageUtil.new(100_000, 6.0, 2_000, 360, 2_000)
+      end
+      it "should not use the borrowed_fees in APR calculation" do
+        @mortgage_util.apr.should be_within(0.00001).of(6.1857)
+      end
+      it "should use the borrowed_fees in monthly payment calculation" do
+        @mortgage_util.monthly_payment.should be_within(0.002).of(611.54)
+      end
+    end
   end
 
 end
